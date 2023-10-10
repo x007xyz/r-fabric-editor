@@ -9,6 +9,7 @@ import './App.less'
 import Editor, { AlignGuidLinePlugin, CenterAlignPlugin, ControlsPlugin, ControlsRotatePlugin, CopyPlugin, DeleteHotKeyPlugin, DownFontPlugin, DrawLinePlugin, DringPlugin, FlipPlugin, GroupAlignPlugin, GroupPlugin, GroupTextEditorPlugin, HistoryPlugin, LayerPlugin, MaterialPlugin, MoveHotKeyPlugin, RulerPlugin, WorkspacePlugin } from './core';
 
 import Menu from "@/components/Menu"
+import AttrMenu from '@/components/AttrMenu';
 import ImportTmpl from '@/components/ImportTmpl';
 
 import { FabricContext, EventContext, CanvasEditorContext } from "@/hooks/context"
@@ -88,7 +89,11 @@ function App() {
                   </div>
                 </div>
                 </Content>
-                <Sider theme='light'>right sidebar</Sider>
+                <Sider theme='light' width={320}>
+                  <div style={{ padding: '8px', overflowY: 'auto' }}>
+                    <AttrMenu></AttrMenu>
+                  </div>
+                </Sider>
               </Layout>
             </Layout>
           </SelectProvider>
