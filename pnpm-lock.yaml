@@ -21,7 +21,7 @@ dependencies:
     specifier: ^3.3.0
     version: registry.npmmirror.com/events@3.3.0
   fabric:
-    specifier: ^5.3.0
+    specifier: ^5.2.1
     version: registry.npmmirror.com/fabric@5.3.0
   fontfaceobserver:
     specifier: ^2.3.0
@@ -46,6 +46,9 @@ dependencies:
     version: registry.npmmirror.com/uuid@9.0.1
 
 devDependencies:
+  '@types/fabric':
+    specifier: ^5.3.4
+    version: registry.npmmirror.com/@types/fabric@5.3.4
   '@types/react':
     specifier: ^18.2.15
     version: registry.npmmirror.com/@types/react@18.2.25
@@ -830,6 +833,12 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  registry.npmmirror.com/@types/fabric@5.3.4:
+    resolution: {integrity: sha512-tunniULcy73pbFbH7W8vtNF6MbOBxL40DNWjT2CrBPe+MJ9Wb8qIpbNAFB7eIpDZkmzYySnIZnxrDMSg8iPNvA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/fabric/-/fabric-5.3.4.tgz}
+    name: '@types/fabric'
+    version: 5.3.4
+    dev: true
 
   registry.npmmirror.com/@types/js-cookie@2.2.7:
     resolution: {integrity: sha512-aLkWa0C0vO5b4Sr798E26QgOkss68Un0bLjs7u9qxzPT5CG+8DuNTffWES58YzJs3hrVAOs1wonycqEBqNJubA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/js-cookie/-/js-cookie-2.2.7.tgz}

@@ -6,7 +6,7 @@ const { Header, Sider, Content } = Layout;
 import { fabric } from 'fabric';
 import { CanvasEventEmitter } from '@/utils/event/notifier';
 import './App.less'
-import Editor, { MaterialPlugin, WorkspacePlugin } from './core';
+import Editor, { AlignGuidLinePlugin, CenterAlignPlugin, ControlsPlugin, ControlsRotatePlugin, CopyPlugin, DeleteHotKeyPlugin, DownFontPlugin, DrawLinePlugin, DringPlugin, FlipPlugin, GroupAlignPlugin, GroupPlugin, GroupTextEditorPlugin, HistoryPlugin, LayerPlugin, MaterialPlugin, MoveHotKeyPlugin, RulerPlugin, WorkspacePlugin } from './core';
 
 import Menu from "@/components/Menu"
 import ImportTmpl from '@/components/ImportTmpl';
@@ -35,7 +35,24 @@ function App() {
     // 初始化编辑器
     _canvasEditor.init(canvas);
 
+    _canvasEditor.use(DringPlugin);
+    _canvasEditor.use(AlignGuidLinePlugin);
+    _canvasEditor.use(ControlsPlugin);
+    _canvasEditor.use(ControlsRotatePlugin);
+    _canvasEditor.use(CenterAlignPlugin);
+    _canvasEditor.use(LayerPlugin);
+    _canvasEditor.use(CopyPlugin);
+    _canvasEditor.use(MoveHotKeyPlugin);
+    _canvasEditor.use(DeleteHotKeyPlugin);
+    _canvasEditor.use(GroupPlugin);
+    _canvasEditor.use(DrawLinePlugin);
+    _canvasEditor.use(GroupTextEditorPlugin);
+    _canvasEditor.use(GroupAlignPlugin);
     _canvasEditor.use(WorkspacePlugin);
+    _canvasEditor.use(DownFontPlugin);
+    // _canvasEditor.use(HistoryPlugin);
+    _canvasEditor.use(FlipPlugin);
+    _canvasEditor.use(RulerPlugin);
     _canvasEditor.use(MaterialPlugin);
 
     _event.init(canvas);
