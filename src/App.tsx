@@ -10,6 +10,7 @@ import Editor, { AlignGuidLinePlugin, CenterAlignPlugin, ControlsPlugin, Control
 
 import Menu from "@/components/Menu"
 import AttrMenu from '@/components/AttrMenu';
+import FlipMenu from '@/components/FlipMenu';
 import ImportTmpl from '@/components/ImportTmpl';
 
 import { FabricContext, EventContext, CanvasEditorContext } from "@/hooks/context"
@@ -91,6 +92,7 @@ function App() {
                 </Content>
                 <Sider theme='light' width={320}>
                   <div style={{ padding: '8px', overflowY: 'auto' }}>
+                    <FlipMenu></FlipMenu>
                     <AttrMenu></AttrMenu>
                   </div>
                 </Sider>

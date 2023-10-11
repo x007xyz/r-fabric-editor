@@ -25,8 +25,10 @@ const SelectProvider = ({ children }) => {
   const [selectIds, setSelectIds] = useState([]);
 
   const event = useEvent();
+  console.log("🚀 ~ file: select.tsx:28 ~ SelectProvider ~ event:", event)
 
   useEffect(() => {
+    if (!event) return;
     event?.on(SelectEvent.ONE, selectOne);
     event?.on(SelectEvent.MULTI, selectMulti);
     event?.on(SelectEvent.CANCEL, selectCancel);
@@ -36,9 +38,10 @@ const SelectProvider = ({ children }) => {
       event.off(SelectEvent.MULTI, selectMulti);
       event.off(SelectEvent.CANCEL, selectCancel);
     };
-  }, []);
+  }, [event]);
 
   const selectOne = item => {
+    console.log("🚀 ~ file: select.tsx:42 ~ selectOne ~ item:", item)
     setSelectMode(SelectMode.ONE);
     setSelectId(item.id);
     setSelectOneType(item.type);

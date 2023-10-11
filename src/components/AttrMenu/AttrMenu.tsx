@@ -27,11 +27,9 @@ function AttrMenu() {
   const event = useEvent();
 
   const getObjectAttr = useCallback((e) => {
-    console.log("🚀 ~ file: AttrMenu.tsx:40 ~ getObjectAttr ~ e:", e)
     const activeObject = canvasEditor.canvas.getActiveObject();
     // 不是当前obj，跳过
     if (e && e.target && e.target !== activeObject) return;
-    console.log("🚀 ~ file: AttrMenu.tsx:65 ~ getObjectAttr ~ activeObject:", activeObject)
     if (activeObject) {
       setBaseAttr({
         id: activeObject.get('id'),
@@ -148,7 +146,6 @@ function AttrMenu() {
 
 
   const changeCommon = (key, value) => {
-    console.log("🚀 ~ file: AttrMenu.tsx:84 ~ changeCommon ~ key, value:", key, value)
     const activeObject = canvasEditor.canvas.getActiveObjects()[0];
     // 透明度特殊转换
     if (key === 'opacity') {
@@ -174,14 +171,12 @@ function AttrMenu() {
       ...val,
       shadow,
     }))
-    console.log("🚀 ~ file: AttrMenu.tsx:92 ~ changeShadow ~ shadow:", shadow)
     const activeObject = canvasEditor.canvas.getActiveObjects()[0];
     activeObject && activeObject.set('shadow', new fabric.Shadow(shadow));
     canvasEditor.canvas.renderAll();
   };
 
   const setBorder = (option) => {
-    console.log("🚀 ~ file: AttrMenu.tsx:175 ~ setBorder ~ value:", option)
     const activeObject = canvasEditor.canvas.getActiveObjects()[0];
     if (activeObject) {
       activeObject.set(option.data);
