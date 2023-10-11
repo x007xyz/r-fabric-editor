@@ -46,7 +46,6 @@ class CenterAlignPlugin {
     if (anignType.includes(name) && activeObject) {
       const defaultWorkspace = this.canvas.getObjects().find((item) => item.id === 'workspace');
       if (defaultWorkspace) {
-        console.log(this[name]);
         this[name](defaultWorkspace, activeObject);
       }
       this.canvas.renderAll();

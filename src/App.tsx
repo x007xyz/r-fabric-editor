@@ -16,6 +16,8 @@ import ImportTmpl from '@/components/ImportTmpl';
 import { FabricContext, EventContext, CanvasEditorContext } from "@/hooks/context"
 
 import { SelectProvider } from '@/hooks/select';
+import ItemAlignMenu from './components/ItemAlignMenu/index';
+import GroupAlignMenu from './components/GroupAlignMenu/GroupAlignMenu';
 
 function App() {
 
@@ -92,6 +94,8 @@ function App() {
                 </Content>
                 <Sider theme='light' width={320}>
                   <div style={{ padding: '8px', overflowY: 'auto' }}>
+                    <GroupAlignMenu></GroupAlignMenu>
+                    <ItemAlignMenu></ItemAlignMenu>
                     <FlipMenu></FlipMenu>
                     <AttrMenu></AttrMenu>
                   </div>

@@ -7,13 +7,14 @@ import React, { useCallback } from 'react'
 function FlipMenu() {
   const { selectMode } = useSelect();
   const canvasEditor = useCanvasEditor();
-  if (selectMode !== SelectMode.ONE) return null;
-
   const flip = useCallback((type) => {
     const activeObject = canvasEditor.canvas.getActiveObject();
     activeObject.set(`flip${type}`, !activeObject[`flip${type}`]).setCoords();
     canvasEditor.canvas.requestRenderAll();
   }, [canvasEditor])
+
+  if (selectMode !== SelectMode.ONE) return null;
+
   return (
     <div className='flip-box'>
       <Tooltip title="水平翻转">

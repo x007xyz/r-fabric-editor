@@ -49,6 +49,7 @@ const SelectProvider = ({ children }) => {
   };
 
   const selectMulti = items => {
+    console.log("🚀 ~ file: select.tsx:52 ~ selectMulti ~ items:", items)
     setSelectMode(SelectMode.MULTI);
     setSelectId('');
     setSelectIds(items.map(item => item.id));
