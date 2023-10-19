@@ -55,6 +55,7 @@ class GroupAlignPlugin {
   }
 
   right() {
+    console.log('right')
     const { canvas } = this;
     // const activeObject = canvas.getActiveObject();
     // if (activeObject && activeObject.type === 'activeSelection') {
