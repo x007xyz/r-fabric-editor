@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Layout } from 'antd';
 
 const { Header, Sider, Content } = Layout;
@@ -12,12 +12,14 @@ import Menu from "@/components/Menu"
 import AttrMenu from '@/components/AttrMenu';
 import FlipMenu from '@/components/FlipMenu';
 import ImportTmpl from '@/components/ImportTmpl';
+import SVGElemMenu from '@/components/SVGElemMenu';
 
 import { FabricContext, EventContext, CanvasEditorContext } from "@/hooks/context"
 
 import { SelectProvider } from '@/hooks/select';
 import ItemAlignMenu from './components/ItemAlignMenu/index';
 import GroupAlignMenu from './components/GroupAlignMenu/GroupAlignMenu';
+import ElementMenu from './components/ElementMenu';
 
 function App() {
 
@@ -25,10 +27,13 @@ function App() {
 
   const [canvasEditor, setCanvasEditor] = useState(undefined);
 
+  const [active, setActive] = useState<number>(0);
+
   useEffect(() => {
     console.log('App useEffect')
     const _event = new CanvasEventEmitter();
     const _canvasEditor = new Editor();
+
     // 初始化fabric
     const canvas = new fabric.Canvas('canvas', {
       fireRightClick: true, // 启用右键，button的数字为3
@@ -68,6 +73,17 @@ function App() {
 
   function onChangeMenu(active: number) {
     console.log('onChangeMenu', active)
+    setActive(active)
+  }
+
+  function showMenu(active: number) {
+    if (active === 0) {
+      return <ImportTmpl></ImportTmpl>
+    } else if (active === 1) {
+      return <ElementMenu></ElementMenu>
+    } else if (active === 2) {
+      return <SVGElemMenu></SVGElemMenu>
+    }
   }
 
   return (
@@ -81,7 +97,7 @@ function App() {
                 <Sider theme='light' width={320}>
                   <Menu onChangeMenu={onChangeMenu}></Menu>
                   <div className="menu-content">
-                    <ImportTmpl></ImportTmpl>
+                    {showMenu(active)}
                   </div>
                 </Sider>
                 <Content>
