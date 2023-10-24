@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Layout } from 'antd';
+import { Divider, Layout } from 'antd';
 
 const { Header, Sider, Content } = Layout;
 
@@ -22,6 +22,8 @@ import ItemAlignMenu from './components/ItemAlignMenu/index';
 import GroupAlignMenu from './components/GroupAlignMenu/GroupAlignMenu';
 import ElementMenu from './components/ElementMenu';
 import HistoryMenu from './components/HistoryMenu';
+import ImportFileButton from './components/ImportFileButton/index';
+import ImportJSONButton from './components/ImportJSONButton/index';
 
 function App() {
 
@@ -93,7 +95,13 @@ function App() {
           <SelectProvider>
             <Layout style={{height: '100%'}}>
               <Header style={{ background: 'white' }}>
-                <HistoryMenu></HistoryMenu>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <ImportJSONButton></ImportJSONButton>
+                  <Divider type="vertical" />
+                  <ImportFileButton></ImportFileButton>
+                  <Divider type="vertical" />
+                  <HistoryMenu></HistoryMenu>
+                </div>
               </Header>
               <Layout>
                 <Sider theme='light' width={320}>

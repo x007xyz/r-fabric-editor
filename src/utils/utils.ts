@@ -20,6 +20,37 @@ interface Font {
 }
 
 /**
+ * @description: 选择文件
+ * @param {Object} options accept = '', capture = '', multiple = false
+ * @return {Promise}
+ */
+export const selectFiles = (options: {
+  accept?: string;
+  capture?: string;
+  multiple?: boolean;
+}) => {
+  options = { accept: "image/*", multiple: false, ...options };
+  // 创建input[type="file"]
+  const input = document.createElement("input");
+  input.type = "file";
+  // 获取选择的文件
+  input.id = "upFile";
+  // 设置文件类型
+  input.accept = options.accept;
+  // 设置是否多选
+  if (options.multiple) {
+    input.multiple = "multiple";
+  }
+  return new Promise((resolve) => {
+    input.onchange = function () {
+      resolve(this.files);
+    };
+    // 触发选择
+    input.click();
+  });
+};
+
+/**
  * @description: 图片文件转字符串
  * @param {Blob|File} file 文件
  * @return {String}
@@ -48,25 +79,6 @@ export function downFontByJSON(str: string) {
     return font.load(null, 150000);
   });
   return Promise.all(fontFamiliesAll);
-}
-
-/**
- * @description: 选择文件
- * @param {Object} options accept = '', capture = '', multiple = false
- * @return {Promise}
- */
-export function selectFiles(options: {
-  accept?: string;
-  capture?: string;
-  multiple?: boolean;
-}): Promise<FileList | null> {
-  return new Promise((resolve) => {
-    const { onChange, open } = useFileDialog(options);
-    onChange((files) => {
-      resolve(files);
-    });
-    open();
-  });
 }
 
 /**
