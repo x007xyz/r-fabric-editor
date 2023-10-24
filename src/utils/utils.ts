@@ -56,7 +56,14 @@ export const selectFiles = (options: {
  * @return {String}
  */
 export function getImgStr(file: File | Blob): Promise<FileReader['result']> {
-  return useBase64(file).promise.value;
+  // 将文件转为base64
+
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  })
 }
 
 /**
