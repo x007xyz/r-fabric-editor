@@ -24,6 +24,7 @@ import ElementMenu from './components/ElementMenu';
 import HistoryMenu from './components/HistoryMenu';
 import ImportFileButton from './components/ImportFileButton/index';
 import ImportJSONButton from './components/ImportJSONButton/index';
+import PreviewButton from './components/PreviewButton';
 
 function App() {
 
@@ -95,12 +96,17 @@ function App() {
           <SelectProvider>
             <Layout style={{height: '100%'}}>
               <Header style={{ background: 'white' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <ImportJSONButton></ImportJSONButton>
-                  <Divider type="vertical" />
-                  <ImportFileButton></ImportFileButton>
-                  <Divider type="vertical" />
-                  <HistoryMenu></HistoryMenu>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <ImportJSONButton></ImportJSONButton>
+                    <Divider type="vertical" />
+                    <ImportFileButton></ImportFileButton>
+                    <Divider type="vertical" />
+                    <HistoryMenu></HistoryMenu>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <PreviewButton></PreviewButton>
+                  </div>
                 </div>
               </Header>
               <Layout>
