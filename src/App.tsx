@@ -21,6 +21,7 @@ import { SelectProvider } from '@/hooks/select';
 import ItemAlignMenu from './components/ItemAlignMenu/index';
 import GroupAlignMenu from './components/GroupAlignMenu/GroupAlignMenu';
 import ElementMenu from './components/ElementMenu';
+import HistoryMenu from './components/HistoryMenu';
 
 function App() {
 
@@ -31,7 +32,6 @@ function App() {
   const [active, setActive] = useState<number>(0);
 
   useEffect(() => {
-    console.log('App useEffect')
     const _event = new CanvasEventEmitter();
     const _canvasEditor = new Editor();
 
@@ -60,7 +60,7 @@ function App() {
     _canvasEditor.use(GroupAlignPlugin);
     _canvasEditor.use(WorkspacePlugin);
     _canvasEditor.use(DownFontPlugin);
-    // _canvasEditor.use(HistoryPlugin);
+    _canvasEditor.use(HistoryPlugin);
     _canvasEditor.use(FlipPlugin);
     _canvasEditor.use(RulerPlugin);
     _canvasEditor.use(MaterialPlugin);
@@ -73,7 +73,6 @@ function App() {
   }, [])
 
   function onChangeMenu(active: number) {
-    console.log('onChangeMenu', active)
     setActive(active)
   }
 
@@ -93,7 +92,9 @@ function App() {
         <CanvasEditorContext.Provider value={canvasEditor}>
           <SelectProvider>
             <Layout style={{height: '100%'}}>
-              <Header style={{ background: 'white' }}>header</Header>
+              <Header style={{ background: 'white' }}>
+                <HistoryMenu></HistoryMenu>
+              </Header>
               <Layout>
                 <Sider theme='light' width={320}>
                   <Menu onChangeMenu={onChangeMenu}></Menu>

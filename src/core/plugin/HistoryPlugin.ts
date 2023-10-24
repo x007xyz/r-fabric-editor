@@ -9,7 +9,7 @@
 
 import { fabric } from 'fabric';
 import Editor from '../core';
-import { useHistoryTravel } from 'ahooks';
+import { History } from '@/utils/history';
 type IEditor = Editor;
 // import { v4 as uuid } from 'uuid';
 
@@ -18,7 +18,7 @@ class HistoryPlugin {
   public editor: IEditor;
   static pluginName = 'HistoryPlugin';
   static apis = ['undo', 'redo', 'getHistory'];
-  static events = ['historyInitSuccess'];
+  static events = ['historyInitSuccess', 'historyChange'];
   public hotkeys: string[] = ['ctrl+z'];
   history: any;
   constructor(canvas: fabric.Canvas, editor: IEditor) {
@@ -29,9 +29,7 @@ class HistoryPlugin {
   }
 
   _init() {
-    this.history = useHistoryTravel(
-      '', 50,
-    );
+    this.history = new History(10, []);
     this.canvas.on({
       'object:added': (event) => this._save(event),
       'object:modified': (event) => this._save(event),
@@ -50,32 +48,33 @@ class HistoryPlugin {
     if (!workspace) {
       return;
     }
-    // if (this.history.isTracking.value) {
-    //   this.history.source.value = this.editor.getJson();
-    // }
-    this.history.setValue(this.editor.getJson());
+    this.history.push(this.editor.getJson());
+    this.editor.emit('historyChange', this.history);
   }
 
   undo() {
-    if (this.history.backLength > 0) {
-      this.renderCanvas();
+    console.log('undo');
+    if (this.history.currentIndex >= 0) {
       this.history.back();
+      this.renderCanvas();
+      this.editor.emit('historyChange', this.history);
     }
   }
 
   redo() {
-    if (this.history.forwardLength > 0) {
-      this.history.foward();
+    if (this.history.currentIndex <= this.history.data.length - 1) {
+      this.history.forward();
       this.renderCanvas();
+      this.editor.emit('historyChange', this.history);
     }
   }
 
   renderCanvas = () => {
-    // this.history.pause();
+    this.history.pause();
     this.canvas.clear();
     this.canvas.loadFromJSON(this.history.value, () => {
       this.canvas.renderAll();
-      // this.history.resume();
+      this.history.resume();
     });
   };
 
