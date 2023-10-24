@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Divider, Layout } from 'antd';
+import { Divider, Layout, Space } from 'antd';
 
 const { Header, Sider, Content } = Layout;
 
@@ -25,6 +25,8 @@ import HistoryMenu from './components/HistoryMenu';
 import ImportFileButton from './components/ImportFileButton/index';
 import ImportJSONButton from './components/ImportJSONButton/index';
 import PreviewButton from './components/PreviewButton';
+import SaveButton from './components/SaveButton/SaveButton';
+import ClearButton from './components/ClearButton/ClearButton';
 
 function App() {
 
@@ -104,9 +106,11 @@ function App() {
                     <Divider type="vertical" />
                     <HistoryMenu></HistoryMenu>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Space>
                     <PreviewButton></PreviewButton>
-                  </div>
+                    <ClearButton></ClearButton>
+                    <SaveButton></SaveButton>
+                  </Space>
                 </div>
               </Header>
               <Layout>

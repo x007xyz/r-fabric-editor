@@ -22,7 +22,6 @@ function PreviewButton() {
         预览
       </Button>
       <Image
-        width={200}
         style={{ display: 'none' }}
         preview={{
           visible,
