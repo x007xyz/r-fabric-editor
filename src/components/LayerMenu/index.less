@@ -1,0 +1,33 @@
+.layer-box {
+  height: calc(100vh - 170px);
+  overflow-y: auto;
+  margin-bottom: 5px;
+  .ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  & > div {
+    padding: 0px 5px;
+    margin: 3px 0;
+    background: #f7f7f7;
+    color: #c8c8c8;
+    border-radius: 3px;
+    font-size: 14px;
+    line-height: 28px;
+    &.active {
+      color: #2d8cf0;
+      background: #f0faff;
+      font-weight: bold;
+    }
+  }
+}
+
+.btn-group{
+  display: flex;
+  justify-content: space-evenly;
+  cursor: pointer;
+}

@@ -13,6 +13,7 @@ import AttrMenu from '@/components/AttrMenu';
 import FlipMenu from '@/components/FlipMenu';
 import ImportTmpl from '@/components/ImportTmpl';
 import SVGElemMenu from '@/components/SVGElemMenu';
+import LayerMenu from '@/components/LayerMenu';
 
 import { FabricContext, EventContext, CanvasEditorContext } from "@/hooks/context"
 
@@ -98,6 +99,9 @@ function App() {
                   <Menu onChangeMenu={onChangeMenu}></Menu>
                   <div className="menu-content">
                     {showMenu(active)}
+                    <div style={{display: active === 3 ? 'block' : 'none'}}>
+                      <LayerMenu></LayerMenu>
+                    </div>
                   </div>
                 </Sider>
                 <Content>

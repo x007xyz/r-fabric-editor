@@ -40,8 +40,8 @@ const SelectProvider = ({ children }) => {
     };
   }, [event]);
 
-  const selectOne = item => {
-    console.log("🚀 ~ file: select.tsx:42 ~ selectOne ~ item:", item)
+  const selectOne = ([item]) => {
+    console.log("🚀 ~ file: select.tsx:42 ~ selectOne ~ item:",item)
     setSelectMode(SelectMode.ONE);
     setSelectId(item.id);
     setSelectOneType(item.type);
