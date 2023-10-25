@@ -1,4 +1,4 @@
-name: NodeJS with Webpack
+name: 发布项目
 
 on:
   push:
