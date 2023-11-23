@@ -27,6 +27,7 @@ import ImportJSONButton from './components/ImportJSONButton/index';
 import PreviewButton from './components/PreviewButton';
 import SaveButton from './components/SaveButton/SaveButton';
 import ClearButton from './components/ClearButton/ClearButton';
+import WaterMarkButton from './components/WaterMarkButton';
 
 function App() {
 
@@ -107,6 +108,7 @@ function App() {
                     <HistoryMenu></HistoryMenu>
                   </div>
                   <Space>
+                    <WaterMarkButton />
                     <PreviewButton></PreviewButton>
                     <ClearButton></ClearButton>
                     <SaveButton></SaveButton>
