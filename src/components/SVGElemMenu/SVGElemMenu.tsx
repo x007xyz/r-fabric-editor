@@ -35,7 +35,7 @@ function SVGElemMenu() {
   });
 
   useEffect(() => {
-    canvasEditor.getMaterialType('svg').then((list: materialTypeI[]) => {
+    canvasEditor.getMaterialList('svg').then((list: materialTypeI[]) => {
       setState({
         ...state,
         materialTypelist: [...list],

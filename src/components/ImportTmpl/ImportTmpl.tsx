@@ -31,7 +31,7 @@ function ImportTmpl() {
   useEffect(() => {
     console.log("🚀 ~ file: ImportTmpl.tsx:19 ~ ImportTmpl ~ canvasEditor:", canvasEditor)
     // 获取素材分类
-    canvasEditor?.getMaterialType('template').then((list: materialTypeI[]) => {
+    canvasEditor?.getMaterialList('template').then((list: materialTypeI[]) => {
       setState(state => ({
         ...state,
         materialTypelist: [...list],

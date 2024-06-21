@@ -78,7 +78,7 @@ function LayerMenu() {
       <Divider orientation='left'>图层</Divider>
       <div className="layer-box">
         {list.map((item) => {
-          return <div key={item.id} onClick={() => selectLayer(item.id)} className={ (selectId === item.id || selectIds.includes(item.id)) && 'active' }>
+          return <div key={item.id} onClick={() => selectLayer(item.id)} className={ (selectId === item.id || selectIds.includes(item.id)) ? 'active' : '' }>
             <Tooltip title={item.name || item.text || item.type} placement='left'>
               <div className="ellipsis">
                 <img src={typeIcon[item.type]} alt="" />

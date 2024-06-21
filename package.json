@@ -1,6 +1,6 @@
 {
   "name": "r-fabric-editor",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -10,18 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "fabric-editor-core": "workspace:^",
     "@ant-design/icons": "^5.2.6",
     "ahooks": "^3.7.8",
     "antd": "^5.9.4",
     "axios": "^1.5.1",
     "events": "^3.3.0",
     "fabric": "^5.2.1",
-    "fontfaceobserver": "^2.3.0",
     "hotkeys-js": "^3.12.0",
     "lodash-es": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tapable": "^2.2.1",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

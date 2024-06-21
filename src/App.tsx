@@ -6,7 +6,7 @@ const { Header, Sider, Content } = Layout;
 import { fabric } from 'fabric';
 import { CanvasEventEmitter } from '@/utils/event/notifier';
 import './App.less'
-import Editor, { AlignGuidLinePlugin, CenterAlignPlugin, ControlsPlugin, ControlsRotatePlugin, CopyPlugin, DeleteHotKeyPlugin, DownFontPlugin, DrawLinePlugin, DringPlugin, FlipPlugin, GroupAlignPlugin, GroupPlugin, GroupTextEditorPlugin, HistoryPlugin, LayerPlugin, MaterialPlugin, MoveHotKeyPlugin, RulerPlugin, WorkspacePlugin } from './core';
+import Editor, { AlignGuidLinePlugin, CenterAlignPlugin, ControlsPlugin, ControlsRotatePlugin, CopyPlugin, DeleteHotKeyPlugin, DrawLinePlugin, DringPlugin, FlipPlugin, GroupAlignPlugin, GroupPlugin, GroupTextEditorPlugin, HistoryPlugin, LayerPlugin, MaterialPlugin, MoveHotKeyPlugin, RulerPlugin, WorkspacePlugin } from 'fabric-editor-core';
 
 import Menu from "@/components/Menu"
 import AttrMenu from '@/components/AttrMenu';
@@ -65,7 +65,6 @@ function App() {
     _canvasEditor.use(GroupTextEditorPlugin);
     _canvasEditor.use(GroupAlignPlugin);
     _canvasEditor.use(WorkspacePlugin);
-    _canvasEditor.use(DownFontPlugin);
     _canvasEditor.use(HistoryPlugin);
     _canvasEditor.use(FlipPlugin);
     _canvasEditor.use(RulerPlugin);
