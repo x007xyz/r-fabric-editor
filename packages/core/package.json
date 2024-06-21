@@ -8,7 +8,7 @@
     "build": "vite build",
     "test": "vitest",
     "update:version": "standard-version",
-    "publish": "pnpm run build && pnpm run update:version && npm publish"
+    "release": "pnpm run build && pnpm run update:version && npm publish"
   },
   "dependencies": {
     "@webtoon/psd": "^0.4.0",
