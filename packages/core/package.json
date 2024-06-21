@@ -1,0 +1,35 @@
+{
+  "name": "fabric-editor-core",
+  "version": "1.1.0",
+  "private": false,
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest",
+    "update:version": "standard-version",
+    "publish": "pnpm run build && pnpm run update:version && pnpm publish"
+  },
+  "dependencies": {
+    "@webtoon/psd": "^0.4.0",
+    "events": "^3.3.0",
+    "fabric-history": "^1.6.0",
+    "fontfaceobserver": "^2.1.0",
+    "hotkeys-js": "^3.8.8",
+    "jsbarcode": "^3.11.6",
+    "qr-code-styling": "1.6.0-rc.1",
+    "qs": "^6.12.1",
+    "tapable": "^2.2.1",
+    "uuid": "^8.3.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jsdom": "^21.1.6",
+    "jsdom": "^24.0.0",
+    "standard-version": "^9.5.0",
+    "vite-plugin-eslint": "^1.8.1",
+    "vitest": "^1.6.0"
+  }
+}
