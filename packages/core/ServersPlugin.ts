@@ -101,8 +101,10 @@ class ServersPlugin {
     textPaths.forEach((item) => {
       const object = this.canvas.getObjects().find((o) => o.id === item.id);
       if (object) {
-        fabric.Path.fromObject(item.path, (e) => {
-          object.set('path', e);
+        fabric.Path.fromObject(item.path, (e: fabric.Point[]) => {
+          if ('path' in object) {
+            object.set('path', e);
+          }
         });
       }
     });
@@ -276,7 +278,7 @@ class ServersPlugin {
         width,
         height,
       },
-    };
+    } as fabric.IToSVGOptions;
   }
 
   _getSaveOption() {
@@ -337,7 +339,7 @@ class ServersPlugin {
         this.canvas.remove(obj);
       }
     });
-    this.editor?.setWorkspaseBg('#fff');
+    this.editor?.setWorkspaceBg('#fff');
     this.canvas.discardActiveObject();
     this.canvas.renderAll();
   }

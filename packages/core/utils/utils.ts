@@ -153,11 +153,12 @@ export const isActiveSelection = (thing: unknown): thing is fabric.ActiveSelecti
   return thing instanceof fabric.ActiveSelection;
 };
 
-export function blobToBase64(blob: Blob) {
+export function blobToBase64(blob: Blob): Promise<string> {
   return new Promise((resolve) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
-      resolve(reader.result);
+      if (reader.result)
+      resolve(reader.result as string);
     });
     reader.readAsDataURL(blob);
   });
@@ -168,7 +169,11 @@ export function base64ToBlob(base64Data: string) {
     return null;
   }
   const dataArr = base64Data.split(',');
-  const imageType = dataArr[0].match(/:(.*?);/)[1];
+
+  const imageType = dataArr[0]?.match(/:(.*?);/)?.[1];
+  if (!imageType) {
+    return null
+  }
   const textData = window.atob(dataArr[1]);
   const arrayBuffer = new ArrayBuffer(textData.length);
   const uint8Array = new Uint8Array(arrayBuffer);

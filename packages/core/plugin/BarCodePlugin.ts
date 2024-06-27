@@ -35,7 +35,7 @@ class BarCodePlugin implements IPluginTempl {
       object.src = url;
     }
   }
-  _getBase64Str(option: any) {
+  _getBase64Str(option: IBarCodeOption) {
     const canvas = document.createElement('canvas');
     JsBarcode(canvas, option.value, {
       ...option,
@@ -55,7 +55,7 @@ class BarCodePlugin implements IPluginTempl {
       background: '#fff',
       lineColor: '#000',
       displayValue: false,
-    };
+    } as IBarCodeOption;
   }
 
   addBarcode() {
@@ -77,7 +77,7 @@ class BarCodePlugin implements IPluginTempl {
     );
   }
 
-  setBarcode(option: any) {
+  setBarcode(option: IBarCodeOption) {
     try {
       const url = this._getBase64Str(option);
       const activeObject = this.canvas.getActiveObjects()[0];

@@ -10,12 +10,12 @@ import { fabric } from 'fabric';
 import Editor from '../Editor';
 
 type IEditor = Editor;
-type IStrokeOps = {
-  enabled: boolean;
-  width: number;
-  color: string;
-  type: 'destination-out' | 'source-over' | 'source-in';
-};
+// type IStrokeOps = {
+//   enabled: boolean;
+//   width: number;
+//   color: string;
+//   type: 'destination-out' | 'source-over' | 'source-in';
+// };
 interface IExtendImage {
   [x: string]: any;
   originWidth?: number;

@@ -14,7 +14,7 @@ type IEditor = Editor;
 class WorkspacePlugin implements IPluginTempl {
   static pluginName = 'WorkspacePlugin';
   static events = ['sizeChange'];
-  static apis = ['big', 'small', 'auto', 'one', 'setSize', 'getWorkspase', 'setWorkspaseBg'];
+  static apis = ['big', 'small', 'auto', 'one', 'setSize', 'getWorkspase', 'setWorkspaceBg'];
   workspaceEl!: HTMLElement;
   workspace: null | fabric.Rect;
   option: any;
@@ -195,7 +195,7 @@ class WorkspacePlugin implements IPluginTempl {
     this.canvas.requestRenderAll();
   }
 
-  setWorkspaseBg(color: string) {
+  setWorkspaceBg(color: string) {
     const workspase = this.getWorkspase();
     workspase?.set('fill', color);
   }

@@ -23,6 +23,6 @@
     "src/**/*.vue",
     "typings/**/*.ts",
     "./auto-imports.d.ts"
-  ],
+, "packages/core/utils/math.ts"  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

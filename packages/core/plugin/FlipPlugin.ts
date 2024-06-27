@@ -42,6 +42,7 @@ export default class FlipPlugin implements IPluginTempl {
         },
       ];
     }
+    return
   }
 
   destroy() {

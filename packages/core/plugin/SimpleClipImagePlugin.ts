@@ -1,6 +1,6 @@
 import { fabric } from 'fabric';
 import Editor from '../Editor';
-import { getPolygonVertices } from '../../../src/utils/math';
+import { getPolygonVertices } from '../utils/math';
 import { get, set } from 'lodash-es';
 type IEditor = Editor;
 

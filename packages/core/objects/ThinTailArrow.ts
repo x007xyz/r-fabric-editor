@@ -7,10 +7,18 @@
  */
 import { fabric } from 'fabric';
 
+interface ThinTailArrowOptions extends fabric.ILineOptions {
+  x1: number;
+  x2: number;
+  y1: number;
+  y2: number;
+}
+
 fabric.ThinTailArrow = fabric.util.createClass(fabric.Line, {
   type: 'thinTailArrow',
   superType: 'drawing',
-  initialize(points, options) {
+  
+  initialize(points: number[] | null, options: ThinTailArrowOptions) {
     if (!points) {
       const { x1, x2, y1, y2 } = options;
       points = [x1, y1, x2, y2];
@@ -18,7 +26,8 @@ fabric.ThinTailArrow = fabric.util.createClass(fabric.Line, {
     options = options || {};
     this.callSuper('initialize', points, options);
   },
-  _render(ctx) {
+
+  _render(ctx: CanvasRenderingContext2D) {
     ctx.save();
     // 乘或除对应的scaleX(Y)，抵消元素放缩造成的影响，使箭头不会变形
     ctx.scale(1 / this.scaleX, 1 / this.scaleY);
@@ -49,7 +58,7 @@ fabric.ThinTailArrow = fabric.util.createClass(fabric.Line, {
   },
 });
 
-fabric.ThinTailArrow.fromObject = (options, callback) => {
+fabric.ThinTailArrow.fromObject = (options: ThinTailArrowOptions, callback: (obj: fabric.ThinTailArrow) => void) => {
   const { x1, x2, y1, y2 } = options;
   return callback(new fabric.ThinTailArrow([x1, y1, x2, y2], options));
 };

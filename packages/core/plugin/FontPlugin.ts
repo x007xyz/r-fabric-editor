@@ -106,7 +106,7 @@ class FontPlugin implements IPluginTempl {
     const font = new FontFaceObserver(fontName);
     return font.load(null, 150000).then(() => {
       const activeObject = this.canvas.getActiveObjects()[0];
-      if (activeObject) {
+      if (activeObject instanceof fabric.Textbox || activeObject instanceof fabric.IText || activeObject instanceof fabric.Text) {
         activeObject.set('fontFamily', fontName);
         this.canvas.renderAll();
       }

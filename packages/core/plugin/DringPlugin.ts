@@ -10,7 +10,7 @@ import Editor from '../Editor';
 type IEditor = Editor;
 
 export class DringPlugin implements IPluginTempl {
-  defautOption = {};
+  defaultOption = {};
   static pluginName = 'DringPlugin';
   static events = ['startDring', 'endDring'];
   static apis = ['startDring', 'endDring'];
@@ -101,6 +101,7 @@ export class DringPlugin implements IPluginTempl {
   // 快捷键扩展回调
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   hotkeyEvent(eventName: string, e: KeyboardEvent) {
+    console.log("🚀 ~ DringPlugin ~ hotkeyEvent ~ eventName:", eventName)
     if (e.code === 'Space' && e.type === 'keydown') {
       if (!this.dragMode) {
         this.startDring();

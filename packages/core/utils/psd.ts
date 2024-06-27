@@ -6,12 +6,17 @@
  * @Description: PSD转换为fabric.js
  */
 
+import Psd, { Layer, NodeChild } from '@webtoon/psd';
 import _ from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 
-// 入口文件
+interface FabricObject {
+  type: string;
+  version: string;
+  [key: string]: any;
+}
 
-async function psdToJson(psdFile) {
+async function psdToJson(psdFile: Psd): Promise<string> {
   // 初始化
   const json = getTransform();
 
@@ -24,32 +29,33 @@ async function psdToJson(psdFile) {
   const list = flattenTree(psdFile.children);
 
   // 转换
-  const fabricJhildren = await psdChildrenTransform(list);
-  json.objects.push(...fabricJhildren.reverse());
+  const fabricChildren = await psdChildrenTransform(list);
+  json.objects.push(...fabricChildren.reverse());
 
   // 输出文件
   const jsonStr = JSON.stringify(json, null, 2);
   return jsonStr;
 }
 
-async function psdChildrenTransform(children) {
-  function attrTransform(childrens) {
-    const childrensFilter = childrens.filter((item) => {
-      if (item.text) {
-        item.type = 'text';
-      }
+async function psdChildrenTransform(children: Layer[]): Promise<FabricObject[]> {
+  const attrTransform = (children: Layer[]) => {
+    const childrensFilter = children.filter((item) => {
+      // if (item.text) {
+      //   item.type = 'text';
+      // }
       return !item.isHidden;
     });
+
     return childrensFilter.map(async (item) => {
       // 公共属性映射
       const commonAttr = baseUtils([
         'left',
         'top',
-        ['width', (info) => info.width + 50],
+        ['width', (info: any) => info.width + 50],
         'height',
         'name',
         ['visible', () => true],
-        ['opacity', (info) => 255 / info.opacity],
+        ['opacity', (info: any) => 255 / info.opacity],
         ['id', uuid],
       ])(item);
 
@@ -59,19 +65,10 @@ async function psdChildrenTransform(children) {
           sourceType: 'Layer',
           targetType: 'image',
           attr: [],
-          async customTransform(item) {
-            // 图片遮罩
-            // const { maskData } = item.layerFrame.layerProperties;
-            // let clipPath;
-            // if (maskData) {
-            //   clipPath = getAttrByType('rect');
-            //   clipPath.left = maskData.left;
-            //   clipPath.top = maskData.top;
-            // }
-            const base64 = await getLayerBse64(item);
+          customTransform: async (item: Layer) => {
+            const base64 = await getLayerBase64(item);
             return {
               src: base64,
-              // clipPath,
             };
           },
         },
@@ -79,21 +76,24 @@ async function psdChildrenTransform(children) {
           sourceType: 'text',
           targetType: 'textbox',
           attr: ['text'],
-          async customTransform(item) {
-            const { FontSize, FillColor, Tracking } =
-              item.textProperties.EngineDict.StyleRun.RunArray[0].StyleSheet.StyleSheetData;
-            return {
-              charSpacing: Tracking,
-              fontFamily: '站酷快乐体',
-              fill: getColor(FillColor.Values),
-              fontSize: FontSize || 12,
-            };
+          customTransform: async (item: Layer) => {
+            const style = item?.textProperties?.EngineDict.StyleRun as any
+            if (style?.RunArray) {
+              const { FontSize, FillColor, Tracking } = style.RunArray[0].StyleSheet.StyleSheetData;
+              return {
+                charSpacing: Tracking,
+                fontFamily: '站酷快乐体',
+                fill: getColor(FillColor.Values),
+                fontSize: FontSize || 12,
+              };
+            }
+            return;
           },
         },
       ];
 
-      const sourctTypeKey = 'type';
-      const transformTypeInfo = typeList.find((info) => info.sourceType === item[sourctTypeKey]);
+      const sourceTypeKey = 'type';
+      const transformTypeInfo = typeList.find((info) => info.sourceType === item[sourceTypeKey]);
       if (transformTypeInfo) {
         const baseAttr = getAttrByType(transformTypeInfo.targetType);
         const typeAttr = baseUtils(transformTypeInfo.attr)(item);
@@ -106,25 +106,23 @@ async function psdChildrenTransform(children) {
         ...getAttrByType('textbox'),
       };
     });
-  }
-  const resault = await Promise.all(attrTransform(children));
-  return resault;
+  };
+
+  const result = await Promise.all(attrTransform(children));
+  return result as FabricObject[];
 }
 
-function getTransform() {
-  // 初始化
-  const json = {
+function getTransform(): { version: string; objects: FabricObject[]; clipPath: FabricObject | null } {
+  return {
     version: '5.3.0',
     objects: [],
     clipPath: null,
   };
-
-  return json;
 }
 
-function baseUtils(baseAttr) {
-  return function (item) {
-    const attrs = {
+function baseUtils(baseAttr: any[]) {
+  return function (item: any) {
+    const attrs: { [key: string]: any } = {
       desc: {},
     };
     baseAttr.forEach((attrType) => {
@@ -149,8 +147,8 @@ function baseUtils(baseAttr) {
   };
 }
 
-function getAttrByType(type) {
-  const typeMap = {
+function getAttrByType(type: string): FabricObject {
+  const typeMap: { [key: string]: FabricObject } = {
     group: {
       type: 'group',
       version: '5.3.0',
@@ -306,9 +304,9 @@ function getAttrByType(type) {
   return typeMap[type];
 }
 
-function getClipPath(psdFile) {
+function getClipPath(psdFile: Psd): { clipPath: FabricObject; workspase: FabricObject } {
   const { width, height } = psdFile;
-  const clipPath = {
+  const clipPath: FabricObject = {
     type: 'rect',
     version: '5.3.0',
     originX: 'left',
@@ -345,7 +343,7 @@ function getClipPath(psdFile) {
     selectable: true,
     hasControls: true,
   };
-  const workspase = {
+  const workspase: FabricObject = {
     type: 'rect',
     version: '5.3.0',
     originX: 'left',
@@ -368,7 +366,6 @@ function getClipPath(psdFile) {
     angle: 0,
     flipX: false,
     flipY: false,
-    // "opacity": 1,
     shadow: null,
     visible: true,
     backgroundColor: '',
@@ -386,11 +383,14 @@ function getClipPath(psdFile) {
   return { clipPath, workspase };
 }
 
-async function getLayerBse64(layer) {
+async function getLayerBase64(layer: Layer): Promise<string> {
   try {
     const compositeBuffer = await layer.composite();
     const canvasElement = document.createElement('canvas');
     const context = canvasElement.getContext('2d');
+    if (!context) {
+      return ''
+    }
     const imageData = new ImageData(compositeBuffer, layer.width, layer.height);
     canvasElement.width = layer.width;
     canvasElement.height = layer.height;
@@ -402,15 +402,15 @@ async function getLayerBse64(layer) {
   }
 }
 
-function getColor(arr) {
+function getColor(arr: number[]): string {
   const [, r, g, b] = arr;
   return `rgb(${r * 255}, ${g * 255}, ${b * 255})`;
 }
 
-function flattenTree(tree) {
-  const result = [];
+function flattenTree(tree: NodeChild[]): Layer[] {
+  const result: Layer[] = [];
 
-  function traverse(nodes) {
+  function traverse(nodes: NodeChild[]) {
     nodes.forEach((node) => {
       if (node.children) {
         traverse(node.children); // 递归遍历子节点

@@ -10,6 +10,30 @@ import { fabric } from 'fabric';
 import Editor from '../Editor';
 type IEditor = Editor;
 
+// width属性不准确，需要坐标换算
+function getItemSize(item: fabric.Object, size: 'width' | 'height') {
+  if (item.aCoords) {
+    const arr = Object.values(item.aCoords).map((item) => item[size === 'width' ? 'x' : 'y']);
+
+    return Math.max(...arr) - Math.min(...arr);
+  }
+  return 0;
+}
+
+// 获取所有元素高度
+function getSelectionTotal(selection: fabric.ActiveSelection, size: 'width' | 'height', index?: number) {
+  let count = 0;
+  if (selection) {
+    selection.forEachObject((item, i) => {
+      if (index && i >= index) {
+        return
+      }
+      count += getItemSize(item, size);
+    });
+  }
+  return count;
+}
+
 class GroupAlignPlugin implements IPluginTempl {
   static pluginName = 'GroupAlignPlugin';
   static apis = ['left', 'right', 'xcenter', 'ycenter', 'top', 'bottom', 'xequation', 'yequation'];
@@ -222,85 +246,36 @@ class GroupAlignPlugin implements IPluginTempl {
   xequation() {
     const { canvas } = this;
     const activeObject = canvas.getActiveObject();
-    // width属性不准确，需要坐标换算
-    function getItemWidth(item) {
-      let x1 = Infinity,
-        x2 = -Infinity;
-      for (const key in item.aCoords) {
-        if (item.aCoords[key].x < x1) {
-          x1 = item.aCoords[key].x;
-        }
-        if (item.aCoords[key].x > x2) {
-          x2 = item.aCoords[key].x;
-        }
-      }
-      return x2 - x1;
-    }
-
-    // 获取所有元素高度
-    function getAllItemHeight() {
-      let count = 0;
-      if (activeObject) {
-        activeObject.forEachObject((item) => {
-          count += getItemWidth(item);
-        });
-      }
-
-      return count;
-    }
-    // 获取平均间距
-    function spacWidth() {
-      const count = getAllItemHeight();
-      if (activeObject) {
-        const allSpac = Number(activeObject.width) - count;
-        return allSpac / (activeObject._objects.length - 1);
-      }
-    }
-
-    // 获取当前元素之前所有元素的高度
-    function getItemLeft(i) {
-      if (i === 0) return 0;
-      let width = 0;
-      if (activeObject) {
-        for (let index = 0; index < i; index++) {
-          width += getItemWidth(activeObject._objects[index]);
-        }
-      }
-
-      return width;
-    }
-    if (activeObject && activeObject.type === 'activeSelection') {
+    
+    if (activeObject && activeObject instanceof fabric.ActiveSelection) {
       const activeSelection = activeObject;
       // 排序
-      activeSelection._objects.sort((a, b) => a.left - b.left);
+      activeSelection._objects.sort((a, b) => (a.left || 0) - (b.left || 0));
 
       // 平均间距计算
-      const itemSpac = spacWidth();
+      const itemSpac = getSelectionTotal(activeSelection, 'width') / (activeSelection._objects.length - 1);
       // 组原点高度
       const yHeight = Number(activeObject.width) / 2;
 
       activeObject.forEachObject((item, i) => {
         // 获取当前元素之前所有元素的高度
-        const preHeight = getItemLeft(i);
+        const preHeight = getSelectionTotal(activeObject, 'width', i);
         // 顶部距离 间距 * 索引 + 之前元素高度 - 原点高度
         const top = itemSpac * i + preHeight - yHeight;
         item.set('left', top);
       });
     }
 
-    const objecs = canvas.getActiveObjects();
+    const objects = canvas.getActiveObjects();
     canvas.discardActiveObject();
-    objecs.forEach((item) => {
-      let x = Infinity;
-      for (const key in item.aCoords) {
-        if (item.aCoords[key].x < x) {
-          x = item.aCoords[key].x;
-        }
+    objects.forEach((item) => {
+      if (item.aCoords) {
+        const arr = Object.values(item.aCoords).map((item) => item.x);
+        item.set('left', 2 * (item.left || 0) - Math.min(...arr));
       }
-      item.set('left', 2 * item.left - x);
     });
 
-    const sel = new fabric.ActiveSelection(objecs, {
+    const sel = new fabric.ActiveSelection(objects, {
       canvas: canvas,
     });
     canvas.setActiveObject(sel);
@@ -310,77 +285,36 @@ class GroupAlignPlugin implements IPluginTempl {
   yequation() {
     const { canvas } = this;
     const activeObject = canvas.getActiveObject() || { top: 0, height: 0 };
-    // width属性不准确，需要坐标换算
-    function getItemHeight(item) {
-      let y1 = Infinity,
-        y2 = -Infinity;
-      for (const key in item.aCoords) {
-        if (item.aCoords[key].y < y1) {
-          y1 = item.aCoords[key].y;
-        }
-        if (item.aCoords[key].y > y2) {
-          y2 = item.aCoords[key].y;
-        }
-      }
-      return y2 - y1;
-    }
-    // 获取所有元素高度
-    function getAllItemHeight() {
-      let count = 0;
-      activeObject.forEachObject((item) => {
-        count += getItemHeight(item);
-      });
-      return count;
-    }
-    // 获取平均间距
-    function spacHeight() {
-      const count = getAllItemHeight();
-      const allSpac = activeObject.height - count;
-      return allSpac / (activeObject._objects.length - 1);
-    }
 
-    // 获取当前元素之前所有元素的高度
-    function getItemTop(i) {
-      if (i === 0) return 0;
-      let height = 0;
-      for (let index = 0; index < i; index++) {
-        height += getItemHeight(activeObject._objects[index]);
-      }
-      return height;
-    }
-
-    if (activeObject && activeObject.type === 'activeSelection') {
+    if (activeObject && activeObject instanceof fabric.ActiveSelection) {
       const activeSelection = activeObject;
       // 排序
-      activeSelection._objects.sort((a, b) => a.top - b.top);
+      activeSelection._objects.sort((a, b) => (a.top || 0) - (b.top || 0));
 
       // 平均间距计算
-      const itemSpac = spacHeight();
+      const itemSpac = getSelectionTotal(activeSelection, 'height') / (activeSelection._objects.length - 1);
       // 组原点高度
       const yHeight = Number(activeObject.height) / 2;
 
       activeObject.forEachObject((item: fabric.Object, i: number) => {
         // 获取当前元素之前所有元素的高度
-        const preHeight = getItemTop(i);
+        const preHeight = getSelectionTotal(activeSelection, 'height', i);
         // 顶部距离 间距 * 索引 + 之前元素高度 - 原点高度
         const top = itemSpac * i + preHeight - yHeight;
         item.set('top', top);
       });
     }
 
-    const objecs = canvas.getActiveObjects();
+    const objects = canvas.getActiveObjects();
     canvas.discardActiveObject();
-    objecs.forEach((item) => {
-      let y = Infinity;
-      for (const key in item.aCoords) {
-        if (item.aCoords[key].y < y) {
-          y = item.aCoords[key].y;
-        }
+    objects.forEach((item) => {
+      if (item.aCoords) {
+        const arr = Object.values(item.aCoords).map((item) => item.y);
+        item.set('top', 2 * (item.top || 0) - Math.min(...arr));
       }
-      item.set('top', 2 * item.top - y);
     });
 
-    const sel = new fabric.ActiveSelection(objecs, {
+    const sel = new fabric.ActiveSelection(objects, {
       canvas: canvas,
     });
     canvas.setActiveObject(sel);

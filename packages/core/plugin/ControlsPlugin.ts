@@ -51,7 +51,7 @@ function intervalControl() {
     ctx: CanvasRenderingContext2D,
     left: number,
     top: number,
-    styleOverride: any,
+    _styleOverride: any,
     fabricObject: fabric.Object
   ) {
     drawImg(ctx, left, top, verticalImgIcon, 20, 25, fabricObject.angle);
@@ -61,7 +61,7 @@ function intervalControl() {
     ctx: CanvasRenderingContext2D,
     left: number,
     top: number,
-    styleOverride: any,
+    _styleOverride: any,
     fabricObject: fabric.Object
   ) {
     drawImg(ctx, left, top, horizontalImgIcon, 25, 20, fabricObject.angle);
@@ -117,7 +117,7 @@ function peakControl() {
     ctx: CanvasRenderingContext2D,
     left: number,
     top: number,
-    styleOverride: any,
+    _styleOverride: any,
     fabricObject: fabric.Object
   ) {
     drawImg(ctx, left, top, img, 25, 25, fabricObject.angle);
@@ -203,7 +203,7 @@ function rotationControl() {
     ctx: CanvasRenderingContext2D,
     left: number,
     top: number,
-    styleOverride: any,
+    _styleOverride: any,
     fabricObject: fabric.Object
   ) {
     drawImg(ctx, left, top, img, 40, 40, fabricObject.angle);

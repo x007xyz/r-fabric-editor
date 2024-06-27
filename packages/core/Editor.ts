@@ -1,12 +1,12 @@
 import EventEmitter from 'events';
 import hotkeys from 'hotkeys-js';
-import ContextMenu from './ContextMenu.js';
+import ContextMenu from './ContextMenu';
 import ServersPlugin from './ServersPlugin';
 import { AsyncSeriesHook } from 'tapable';
 
 import Utils from './utils/utils';
 
-class Editor extends EventEmitter {
+class Editor extends EventEmitter implements IEditor {
   private canvas: fabric.Canvas | null = null;
   contextMenu: ContextMenu | null = null;
   [key: string]: any;
@@ -57,7 +57,7 @@ class Editor extends EventEmitter {
     }
   }
 
-  destory() {
+  destroy() {
     this.canvas = null;
     this.contextMenu = null;
     this.pluginMap = {};
@@ -70,6 +70,7 @@ class Editor extends EventEmitter {
     if (this.pluginMap[name]) {
       return this.pluginMap[name];
     }
+    return
   }
 
   // 检查组件

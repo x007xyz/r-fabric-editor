@@ -98,6 +98,7 @@ class LayerPlugin implements IPluginTempl {
       ];
       // return [{ text: '复制', hotkey: 'Ctrl+V', disabled: false, onclick: () => this.clone() }];
     }
+    return;
   }
 
   destroy() {

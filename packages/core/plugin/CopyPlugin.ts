@@ -109,6 +109,7 @@ class CopyPlugin implements IPluginTempl {
     if (activeObject) {
       return [{ text: '复制', hotkey: 'Ctrl+V', disabled: false, onclick: () => this.clone() }];
     }
+    return;
   }
 
   destroy() {

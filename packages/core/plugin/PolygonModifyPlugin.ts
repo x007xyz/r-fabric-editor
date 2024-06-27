@@ -27,6 +27,7 @@ const actionHandler: fabric.Control['actionHandler'] = function (
   x: number,
   y: number
 ) {
+  console.log("🚀 ~ eventData:", eventData)
   const polygon = transform.target as PointIndexPolygon,
     currentControl = polygon.controls[polygon.__corner] as PointIndexControl,
     mouseLocalPosition = polygon.toLocalPoint(new fabric.Point(x, y), 'center', 'center'),
@@ -70,8 +71,8 @@ const getObjectSizeWithStroke = function (object: fabric.Object) {
 };
 const polygonPositionHandler = function (
   this: PointIndexControl,
-  dim: any,
-  finalMatrix: any,
+  _dim: any,
+  _finalMatrix: any,
   fabricObject: any
 ) {
   const x = fabricObject.points[this.pointIndex].x - fabricObject.pathOffset.x,
@@ -89,7 +90,7 @@ function renderIconEdge(
   ctx: CanvasRenderingContext2D,
   left: number,
   top: number,
-  styleOverride: any,
+  _styleOverride: any,
   fabricObject: fabric.Object
 ) {
   const img = document.createElement('img');
@@ -126,7 +127,7 @@ class PolygonModifyPlugin implements IPluginTempl {
       const lastControl = poly.points.length - 1;
       poly.controls = poly.points.reduce<Record<string, PointIndexControl>>(function (
         acc,
-        point,
+        _point,
         index
       ) {
         acc['p' + index] = <PointIndexControl>new fabric.Control({

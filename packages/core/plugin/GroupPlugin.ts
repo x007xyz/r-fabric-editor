@@ -59,6 +59,7 @@ class GroupPlugin implements IPluginTempl {
         { text: '拆分组合', hotkey: 'Ctrl+V', disabled: false, onclick: () => this.unGroup() },
       ];
     }
+    return;
   }
   destroy() {
     console.log('pluginDestroy');

@@ -39,6 +39,7 @@ class DeleteHotKeyPlugin implements IPluginTempl {
     if (activeObject) {
       return [null, { text: '删除', hotkey: 'Ctrl+V', disabled: false, onclick: () => this.del() }];
     }
+    return;
   }
 
   destroy() {

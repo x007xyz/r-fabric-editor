@@ -12,14 +12,13 @@ import { resolve } from 'path';
 
 const config = () => {
   return {
-    base: './',
     build: {
+      cssCodeSplit: false,
       lib: {
         entry: resolve(__dirname, './index.ts'),
-        name: 'Kuaitu',
+        name: 'core',
         fileName: 'index',
-      },
-      outDir: resolve(__dirname, '../../dist'),
+      }
     },
     plugins: [
       // 增加下面的配置项,这样在运行时就能检查eslint规范

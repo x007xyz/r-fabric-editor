@@ -23,15 +23,17 @@ declare interface HorizontalLine {
   y: number;
 }
 
-class AlignGuidLinePlugin implements IPluginTempl {
-  defautOption = {
+class AlignGuidLinePlugin implements IPluginClass {
+  defaultOption = {
     color: 'rgba(255,95,95,1)',
     width: 1,
   };
   static pluginName = 'AlignGuidLinePlugin';
   dragMode = false;
-  constructor(public canvas: fabric.Canvas, public editor: IEditor) {
+  constructor(public canvas: fabric.Canvas, public editor: IEditor, public options?: IPluginOption) {
     this.dragMode = false;
+    // 合并默认选项和传入的选项
+    this.defaultOption = {...this.defaultOption, ...options};
     this.init();
   }
   init() {
@@ -283,8 +285,8 @@ class AlignGuidLinePlugin implements IPluginTempl {
     canvas.on('after:render', () => {
       ctx.save();
       ctx.beginPath();
-      ctx.lineWidth = This.defautOption.width;
-      ctx.strokeStyle = This.defautOption.color;
+      ctx.lineWidth = This.defaultOption.width;
+      ctx.strokeStyle = This.defaultOption.color;
       for (let i = verticalLines.length; i--; ) {
         drawVerticalLine(verticalLines[i]);
       }

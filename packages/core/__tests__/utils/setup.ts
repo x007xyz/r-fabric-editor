@@ -16,7 +16,7 @@ export function createEditor() {
   window.editor = editor;
 
   return {
-    cleanUp: editor.destory(),
+    cleanUp: editor.destroy(),
   };
 }
 
@@ -30,7 +30,7 @@ export function initPlugin(plugin: any) {
   return {
     pluginInstance,
     cleanUp: () => {
-      editor.destory();
+      editor.destroy();
     },
   };
 }
