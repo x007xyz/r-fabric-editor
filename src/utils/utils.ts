@@ -1,22 +1,18 @@
-/*
- * @Author: 秦少卫
- * @Date: 2022-09-05 22:21:55
- * @LastEditors: 秦少卫
- * @LastEditTime: 2023-07-29 21:30:41
- * @Description: 工具文件
+/**
+ * @description: 图片文件转字符串
+ * @param {Blob|File} file 文件
+ * @return {String}
  */
-
-import FontFaceObserver from 'fontfaceobserver';
-// import { useClipboard, useFileDialog, useBase64 } from '@vueuse/core';
-import { message } from 'antd';
-
-const useClipboard = () => {}
-const useFileDialog = () => {}
-const useBase64 = () => {}
-
-interface Font {
-  type: string;
-  fontFamily: string;
+export function getImgStr(file: File | Blob): Promise<FileReader['result']> {
+  // return useBase64(file).promise.value;
+  // 文件转base64
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve(reader.result);
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 /**
@@ -24,68 +20,34 @@ interface Font {
  * @param {Object} options accept = '', capture = '', multiple = false
  * @return {Promise}
  */
-export const selectFiles = (options: {
+export function selectFiles(options: {
   accept?: string;
   capture?: string;
   multiple?: boolean;
-}) => {
-  options = { accept: "image/*", multiple: false, ...options };
-  // 创建input[type="file"]
-  const input = document.createElement("input");
-  input.type = "file";
-  // 获取选择的文件
-  input.id = "upFile";
-  // 设置文件类型
-  input.accept = options.accept;
-  // 设置是否多选
-  if (options.multiple) {
-    input.multiple = "multiple";
-  }
-  return new Promise((resolve) => {
-    input.onchange = function () {
-      resolve(this.files);
-    };
-    // 触发选择
-    input.click();
-  });
-};
-
-/**
- * @description: 图片文件转字符串
- * @param {Blob|File} file 文件
- * @return {String}
- */
-export function getImgStr(file: File | Blob): Promise<FileReader['result']> {
-  // 将文件转为base64
-
+}): Promise<FileList | null> {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  })
-}
+    // 创建input[file]元素
+    const input = document.createElement('input')
+    // 设置相应属性
+    input.setAttribute('type', 'file')
+    if (options.capture) {
+      input.setAttribute('capture', options.capture)
+    }
+    input.setAttribute('accept', options.accept || "*")
+    options.multiple
+      ? input.setAttribute('multiple', 'multiple')
+      : input.removeAttribute('multiple')
+    // 绑定事件
+    input.onchange = (event) => {
+      // 获取文件列表
+      resolve((event.target as HTMLInputElement).files)
+    }
 
-/**
- * @description: 根据json模板下载字体文件
- * @param {String} str
- * @return {Promise}
- */
-export function downFontByJSON(str: string) {
-  const skipFonts = ['arial', 'Microsoft YaHei'];
-  const fontFamilies: string[] = JSON.parse(str)
-    .objects.filter(
-      (item: Font) =>
-        // 为text 并且不为包含字体
-        // eslint-disable-next-line implicit-arrow-linebreak
-        item.type.includes('text') && !skipFonts.includes(item.fontFamily)
-    )
-    .map((item: Font) => item.fontFamily);
-  const fontFamiliesAll = fontFamilies.map((fontName) => {
-    const font = new FontFaceObserver(fontName);
-    return font.load(null, 150000);
-  });
-  return Promise.all(fontFamiliesAll);
+    input.oncancel = function () {
+      reject(new Error('No files selected'))
+    }
+    input.click()
+  })
 }
 
 /**
@@ -105,21 +67,8 @@ export function insertImgFile(str: string) {
   });
 }
 
-/**
- * Copying text to the clipboard
- * @param source Copy source
- * @param options Copy options
- * @returns Promise that resolves when the text is copied successfully, or rejects when the copy fails.
- */
-export const clipboardText = async (
-  source: string,
-  options?: Parameters<typeof useClipboard>[0]
-) => {
-  try {
-    await useClipboard({ source, ...options }).copy();
-    message.success('复制成功');
-  } catch (error) {
-    message.error('复制失败');
-    throw error;
-  }
+export default {
+  getImgStr,
+  selectFiles,
+  insertImgFile
 };
