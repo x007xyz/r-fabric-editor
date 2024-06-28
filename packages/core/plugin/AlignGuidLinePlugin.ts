@@ -23,7 +23,7 @@ declare interface HorizontalLine {
   y: number;
 }
 
-class AlignGuidLinePlugin implements IPluginClass {
+class AlignGuidLinePlugin implements IPluginTempl {
   defaultOption = {
     color: 'rgba(255,95,95,1)',
     width: 1,

@@ -6,7 +6,7 @@ import { AsyncSeriesHook } from 'tapable';
 
 import Utils from './utils/utils';
 
-class Editor extends EventEmitter implements IEditor {
+class Editor extends EventEmitter {
   private canvas: fabric.Canvas | null = null;
   contextMenu: ContextMenu | null = null;
   [key: string]: any;
