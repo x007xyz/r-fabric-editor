@@ -7,7 +7,7 @@
  */
 
 import Psd, { Layer, NodeChild } from '@webtoon/psd';
-import _ from 'lodash-es';
+import * as _ from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 
 interface FabricObject {
@@ -391,7 +391,9 @@ async function getLayerBase64(layer: Layer): Promise<string> {
     if (!context) {
       return ''
     }
-    const imageData = new ImageData(compositeBuffer, layer.width, layer.height);
+    // 避免类型不兼容，重新构建 Uint8ClampedArray
+    const imageDataArray = new Uint8ClampedArray(Array.from(compositeBuffer));
+    const imageData = new ImageData(imageDataArray, layer.width, layer.height);
     canvasElement.width = layer.width;
     canvasElement.height = layer.height;
     context.putImageData(imageData, 0, 0);
