@@ -87,12 +87,6 @@ importers:
 
   packages/core:
     dependencies:
-      '@types/fontfaceobserver':
-        specifier: ^2.1.3
-        version: 2.1.3
-      '@types/qs':
-        specifier: ^6.9.15
-        version: 6.9.15
       '@webtoon/psd':
         specifier: ^0.4.0
         version: 0.4.0
@@ -127,9 +121,15 @@ importers:
       '@types/fabric':
         specifier: ^5.3.4
         version: 5.3.7
+      '@types/fontfaceobserver':
+        specifier: ^2.1.3
+        version: 2.1.3
       '@types/jsdom':
         specifier: ^21.1.6
         version: 21.1.7
+      '@types/qs':
+        specifier: ^6.9.15
+        version: 6.9.15
       '@types/uuid':
         specifier: ^10.0.0
         version: 10.0.0

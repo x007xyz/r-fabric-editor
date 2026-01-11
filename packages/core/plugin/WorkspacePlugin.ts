@@ -11,31 +11,35 @@ import Editor from '../Editor';
 import { throttle } from 'lodash-es';
 type IEditor = Editor;
 
+interface IOptions {
+  width: number;
+  height: number;
+  backgroundColor: string;
+}
+
 class WorkspacePlugin implements IPluginTempl {
   static pluginName = 'WorkspacePlugin';
   static events = ['sizeChange'];
-  static apis = ['big', 'small', 'auto', 'one', 'setSize', 'getWorkspase', 'setWorkspaceBg'];
+  static apis = ['big', 'small', 'auto', 'one', 'setSize', 'getWorkspace', 'setWorkspaceBg'];
   workspaceEl!: HTMLElement;
   workspace: null | fabric.Rect;
-  option: any;
+  options: IOptions;
   zoomRatio: number;
-  constructor(public canvas: fabric.Canvas, public editor: IEditor) {
+  constructor(public canvas: fabric.Canvas, public editor: IEditor, options: IOptions = { width: 1080, height: 1920, backgroundColor: 'rgba(0,0,0,1)' }) {
     this.workspace = null;
-    this.init({
-      width: 900,
-      height: 2000,
-    });
+    this.options = options;
+    this.init();
     this.zoomRatio = 0.85;
   }
 
-  init(option: { width: number; height: number }) {
+  init() {
     const workspaceEl = document.querySelector('#workspace') as HTMLElement;
     if (!workspaceEl) {
       throw new Error('element #workspace is missing, plz check!');
     }
     this.workspaceEl = workspaceEl;
     this.workspace = null;
-    this.option = option;
+    
     this._initBackground();
     this._initWorkspace();
     this._initResizeObserve();
@@ -49,8 +53,10 @@ class WorkspacePlugin implements IPluginTempl {
         workspace.set('selectable', false);
         workspace.set('hasControls', false);
         workspace.set('evented', false);
-        this.setSize(workspace.width, workspace.height);
-        this.editor.emit('sizeChange', workspace.width, workspace.height);
+        if (workspace.width && workspace.height) {
+          this.setSize(workspace.width, workspace.height);
+          this.editor.emit('sizeChange', workspace.width, workspace.height);
+        }
       }
       resolve('');
     });
@@ -72,9 +78,9 @@ class WorkspacePlugin implements IPluginTempl {
 
   // 初始化画布
   _initWorkspace() {
-    const { width, height } = this.option;
+    const { width, height, backgroundColor } = this.options;
     const workspace = new fabric.Rect({
-      fill: 'rgba(255,255,255,1)',
+      fill: backgroundColor,
       width,
       height,
       id: 'workspace',
@@ -94,7 +100,7 @@ class WorkspacePlugin implements IPluginTempl {
   }
 
   // 返回workspace对象
-  getWorkspase() {
+  getWorkspace() {
     return this.canvas.getObjects().find((item) => item.id === 'workspace') as fabric.Rect;
   }
 
@@ -123,10 +129,10 @@ class WorkspacePlugin implements IPluginTempl {
     resizeObserver.observe(this.workspaceEl);
   }
 
-  setSize(width: number | undefined, height: number | undefined) {
+  setSize(width: number, height: number) {
     this._initBackground();
-    this.option.width = width;
-    this.option.height = height;
+    this.options.width = width;
+    this.options.height = height;
     // 重新设置workspace
     this.workspace = this.canvas
       .getObjects()
@@ -158,7 +164,7 @@ class WorkspacePlugin implements IPluginTempl {
   }
 
   _getScale() {
-    return fabric.util.findScaleToFit(this.getWorkspase(), {
+    return fabric.util.findScaleToFit(this.getWorkspace(), {
       width: this.workspaceEl.offsetWidth,
       height: this.workspaceEl.offsetHeight,
     });
@@ -196,7 +202,7 @@ class WorkspacePlugin implements IPluginTempl {
   }
 
   setWorkspaceBg(color: string) {
-    const workspase = this.getWorkspase();
+    const workspase = this.getWorkspace();
     workspase?.set('fill', color);
   }
 
