@@ -4,7 +4,7 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: mode === 'production' ? '/r-fabric-editor/' : '/',
+  base: '/', // 修改为根路径，适用于服务器根目录部署
   plugins: [
     react(),
   ],

@@ -33,16 +33,14 @@ class FontPlugin implements IPluginTempl {
   static apis = ['getFontList', 'loadFont', 'getFontJson', 'downFontByJSON'];
   repoSrc: string;
   cacheList: FontSource[];
-  constructor(public canvas: fabric.Canvas, public editor: IEditor, config: { repoSrc: string }) {
-    this.repoSrc = config.repoSrc;
+  constructor(public canvas: fabric.Canvas, public editor: IEditor, config: { repoSrc?: string } = {}) {
+    this.repoSrc = config.repoSrc || '';
     this.cacheList = [];
     this.tempPromise = null;
   }
 
-  hookImportBefore(json: string) {
-    return this.downFontByJSON(json);
-  }
   getFontList() {
+    if (!this.repoSrc) return Promise.resolve([]);
     // 返回暂存字体
     if (this.cacheList.length) {
       return Promise.resolve(this.cacheList);
@@ -64,6 +62,10 @@ class FontPlugin implements IPluginTempl {
         return list;
       });
     return this.tempPromise;
+  }
+
+  hookImportBefore(json: string) {
+    return this.downFontByJSON(json);
   }
 
   downFontByJSON(str: string) {

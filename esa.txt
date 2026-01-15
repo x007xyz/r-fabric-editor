@@ -1,0 +1,3 @@
+作品访问URL地址: https://r-fabric-editor.46338883.er.aliyun-esa.net/
+Github仓库地址: https://github.com/x007xyz/r-fabric-editor
+作品介绍: 基于 React 18、Fabric.js 和 Ant Design 构建的插件化图片编辑器，是知名开源项目 vue-fabric-editor 的 React 移植版本。项目采用核心逻辑与 UI 分离的架构（fabric-editor-core），支持高度自定义的插件系统，涵盖了图层管理、撤销重做、标尺辅助线、PSD 解析导入、二维码/条形码生成、路径文字、图片滤镜及裁剪等高级图形编辑功能。支持自定义字体、素材、设计模板、右键菜单及快捷键，为网页端创意设计提供高效且灵活的解决方案。

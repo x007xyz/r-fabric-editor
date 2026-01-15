@@ -68,7 +68,9 @@ function App() {
     _canvasEditor.use(HistoryPlugin);
     _canvasEditor.use(FlipPlugin);
     _canvasEditor.use(RulerPlugin);
-    _canvasEditor.use(MaterialPlugin);
+
+    // MaterialPlugin 现在可以在没有配置的情况下安全初始化
+    _canvasEditor.use(MaterialPlugin, { repoSrc: import.meta.env.VITE_REPO_SRC });
 
     _event.init(canvas);
 

@@ -23,15 +23,17 @@ class MaterialPlugin implements IPluginTempl {
   ];
   apiMapUrl: { [propName: string]: string };
   repoSrc: string;
-  constructor(public canvas: fabric.Canvas, public editor: IEditor, config: { repoSrc: string }) {
-    this.repoSrc = config.repoSrc;
+  constructor(public canvas: fabric.Canvas, public editor: IEditor, config: { repoSrc?: string } = {}) {
+    this.repoSrc = config.repoSrc || '';
     this.apiMapUrl = {
-      template: config.repoSrc + '/template/type.json',
-      svg: config.repoSrc + '/svg/type.json',
+      template: (config.repoSrc || '') + '/template/type.json',
+      svg: (config.repoSrc || '') + '/svg/type.json',
     };
   }
-  // 获取模板分类
+
+  // 修改所有 API 方法，使其在 repoSrc 为空时返回空数据
   getTemplTypeList() {
+    if (!this.repoSrc) return Promise.resolve([]);
     return axios.get(`${this.repoSrc}/api/templ-types?pagination[pageSize]=100`).then((res) => {
       const list = res.data.data.map((item: any) => {
         return {
@@ -42,8 +44,9 @@ class MaterialPlugin implements IPluginTempl {
       return list;
     });
   }
-  // 分页获取模板列表
+
   getTemplList(templType = '', index = 1, searchKeyword = '') {
+    if (!this.repoSrc) return Promise.resolve({ list: [], pagination: {} });
     const query = {
       fields: '*',
       populate: {
@@ -82,11 +85,8 @@ class MaterialPlugin implements IPluginTempl {
     });
   }
 
-  /**
-   * @description: 获取素材分类
-   * @return {Promise<any>}
-   */
   getMaterialTypeList() {
+    if (!this.repoSrc) return Promise.resolve([]);
     return axios.get(`${this.repoSrc}/api/material-types?pagination[pageSize]=100`).then((res) => {
       const list = res.data.data.map((item: any) => {
         return {
@@ -98,11 +98,8 @@ class MaterialPlugin implements IPluginTempl {
     });
   }
 
-  /**
-   * @description: 获取素材列表
-   * @returns Promise<Array>
-   */
   getMaterialList(materialType = '', index = 1, searchKeyword = '') {
+    if (!this.repoSrc) return Promise.resolve([]);
     const query = {
       populate: {
         img: '*',
@@ -142,6 +139,7 @@ class MaterialPlugin implements IPluginTempl {
   }
 
   getSizeList() {
+    if (!this.repoSrc) return Promise.resolve([]);
     return axios.get(`${this.repoSrc}/api/sizes?pagination[pageSize]=100`).then((res) => {
       const list = res.data.data.map((item: any) => {
         return {
@@ -155,17 +153,7 @@ class MaterialPlugin implements IPluginTempl {
       return list;
     });
   }
-  getFontList() {
-    return axios.get(`${this.repoSrc}/api/fonts?pagination[pageSize]=100`).then((res) => {
-      const list = res.data.data.map((item: any) => {
-        return {
-          value: item.id,
-          label: item.attributes.name,
-        };
-      });
-      return list;
-    });
-  }
+
 
   _getMaterialInfoUrl(info: any) {
     const imgUrl = info?.data?.attributes?.url || '';
